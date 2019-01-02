@@ -1,10 +1,26 @@
 import React, {Component} from 'react'
 import './weather.css'
+import moment from 'moment'
 const axios = require('axios')
 
 
 function WeatherList(props) {
-  return (<ul>Hi</ul>)
+  let today = moment()
+  console.log(props)
+  
+  const listItems = props.forecast.list.map((day, index) =>
+    <div key={index} className="row">
+      <div className="col s12 m6">
+        <div className="card blue-grey darken-1">
+          <div className="card-image">
+            <span className="card-title">{today.add(1, 'days').format("DD MMM")}</span>
+            <img src={`http://openweathermap.org/img/w/${day.weather[0].icon}.png`} alt="weather icon"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  return (listItems)
 }
 
 class Weather extends Component {
@@ -32,7 +48,6 @@ class Weather extends Component {
     axios.get(url)
     .then((response) => {
       // handle success
-      console.log(response.data);
       this.setState({
         forecast: response.data,
         showWeather: true
